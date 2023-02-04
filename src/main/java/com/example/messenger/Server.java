@@ -1,5 +1,7 @@
 package com.example.messenger;
 
+import javafx.scene.layout.VBox;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,5 +26,57 @@ public class Server {
             e.printStackTrace();
 
          }
+    }
+
+    public void sendMessageToClient(String messageToClient){
+        try {
+            bufferedWriter.write(messageToClient);
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            System.out.println("Error in sending message to the client");
+            closeEverything(socket, bufferedReader, bufferedWriter);
+        }
+    } {
+
+    }
+
+    public void receiveMessageFromClient(VBox vbox) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(socket.isConnected()) {
+                    try {
+                        String messageFromClient = bufferedReader.readLine();
+                        HelloController.addLabel(messageFromClient, vbox);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        System.out.println("Error in reading form the client");
+                        closeEverything(socket, bufferedReader, bufferedWriter);
+                        break;
+                    }
+                }
+            }
+        });
+
+    }
+    public  void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter){
+        try {
+            if(bufferedReader!= null) {
+                bufferedReader.close();
+            }
+            if(bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+            if(socket != null) {
+                socket.close();
+            }
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

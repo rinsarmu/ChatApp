@@ -25,10 +25,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
+   @FXML
    private Button button_send;
 
+   @FXML
    private TextField tf_message;
+   @FXML
    private VBox vbox_message;
+   @FXML
    private ScrollPane sp_main;
    private Server server;
 
